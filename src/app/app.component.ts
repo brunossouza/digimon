@@ -1,13 +1,101 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { catchError, finalize, Subject, takeUntil } from 'rxjs';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+
+import { HeaderComponent } from './shared/components/header/header.component';
+import { DigimonService } from './shared/services/digimon.service';
+import { DigimonList } from './dtos/digimon-list.dto';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    ReactiveFormsModule,
+    IconFieldModule,
+    InputIconModule,
+    InputTextModule,
+    HeaderComponent,
+    TableModule,
+  ],
+  providers: [DigimonService],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'backend';
+export class AppComponent implements OnInit, OnDestroy {
+  loading = false;
+
+  page: number = 0;
+  pageSize: number = 20;
+
+  digimons: DigimonList | null = null;
+  form!: FormGroup;
+
+  private readonly unsubscribe$ = new Subject<void>();
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly digimonService: DigimonService
+  ) {}
+
+  ngOnInit() {
+    this.configForm();
+    this.loadDigimons();
+  }
+
+  configForm() {
+    this.form = this.formBuilder.group({
+      search: [''],
+    });
+
+    this.form
+      .get('search')
+      ?.valueChanges.pipe(takeUntil(this.unsubscribe$))
+      .subscribe((search) => {
+        this.loading = true;
+        if (search) {
+          this.digimonService
+            .search(search)
+            .pipe(
+              finalize(() => {
+                this.loading = false;
+              }),
+              takeUntil(this.unsubscribe$)
+            )
+            .subscribe((digimons) => {
+              this.digimons = digimons;
+            });
+        } else {
+          this.loadDigimons();
+        }
+      });
+  }
+
+  loadDigimons() {
+    this.loading = true;
+    this.digimonService
+      .getDigimonList({
+        page: this.page,
+        pageSize: this.pageSize,
+      })
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        }),
+        catchError((error) => {
+          return [];
+        }),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((digimons) => {
+        this.digimons = digimons;
+      });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }
