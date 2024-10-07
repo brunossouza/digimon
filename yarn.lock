@@ -5551,6 +5551,13 @@ postcss@^8.2.14, postcss@^8.4.23, postcss@^8.4.33, postcss@^8.4.43:
     picocolors "^1.1.0"
     source-map-js "^1.2.1"
 
+primeng@^17.18.11:
+  version "17.18.11"
+  resolved "https://registry.yarnpkg.com/primeng/-/primeng-17.18.11.tgz#8e5b1b921b303767611f31a356ee972e78ccc98e"
+  integrity sha512-LzV0fFZmb3GdnaRqi1+GP+RPtW0a+jztL5pH1zRWY7+7pyQ0n1YNyTXzmqVcdks/CmoyjNhutWEmexwi6vFVeA==
+  dependencies:
+    tslib "^2.3.0"
+
 proc-log@^4.0.0, proc-log@^4.1.0, proc-log@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/proc-log/-/proc-log-4.2.0.tgz#b6f461e4026e75fdfe228b265e9f7a00779d7034"
