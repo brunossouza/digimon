@@ -1,27 +1,42 @@
-# Frontend
+# Projeto Frontend Digimon
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.7.
+Este é um projeto frontend desenvolvido em Angular que consome uma API de Digimon para exibir informações sobre diferentes Digimons.
 
-## Development server
+## Visão Geral
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+O projeto consiste em uma aplicação web que permite aos usuários:
 
-## Code scaffolding
+- Visualizar uma lista de Digimons
+- Pesquisar Digimons por nome
+- Ver detalhes específicos de cada Digimon
+- Navegar pelas evoluções dos Digimons
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Tecnologias Utilizadas
 
-## Build
+- Angular 18.2.7
+- TypeScript
+- PrimeNG (para componentes de UI)
+- SCSS
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Configuração do Projeto
 
-## Running unit tests
+### Pré-requisitos
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- Node.js (versão 20)
+- Yarn (ou npm)
 
-## Running end-to-end tests
+### Instalação
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. Clone o repositório
+2. Navegue até a pasta do projeto
+3. Execute `yarn install` para instalar as dependências
 
-## Further help
+## Executando o Projeto
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Para iniciar o servidor de desenvolvimento:
+
+```bash
+yarn strart:dev
+```
+
+O projeto estará disponível em [http://localhost:4200](http://localhost:4200).
