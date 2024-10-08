@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { catchError, finalize, Subject, takeUntil } from 'rxjs';
+import { catchError, finalize, Subject, switchMap, takeUntil } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -31,7 +31,7 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
   ],
   providers: [DigimonService],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
   loading = false;
@@ -40,11 +40,13 @@ export class AppComponent implements OnInit, OnDestroy {
   first: number = 0;
   pageSize: number = 20;
   totalRecords: number = 0;
+  isSearching: boolean = false;
 
   digimons: DigimonList | null = null;
   form!: FormGroup;
 
   private readonly unsubscribe$ = new Subject<void>();
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly digimonService: DigimonService
@@ -62,27 +64,27 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.form
       .get('search')
-      ?.valueChanges.pipe(takeUntil(this.unsubscribe$))
-      .subscribe((search) => {
-        this.loading = true;
-        if (search) {
-          this.digimonService
-            .search(search)
-            .pipe(
-              finalize(() => {
-                this.loading = false;
-              }),
-              takeUntil(this.unsubscribe$)
-            )
-            .subscribe((digimons) => {
-              this.digimons = digimons;
-              this.totalRecords = digimons.content.length;
-              this.page = digimons.pageable.currentPage;
-              this.first = 0;
-            });
-        } else {
-          this.loadDigimons();
-        }
+      ?.valueChanges.pipe(
+        takeUntil(this.unsubscribe$),
+        switchMap((search) => {
+          this.loading = true;
+          this.isSearching = !!search;
+          return search
+            ? this.digimonService.search(search)
+            : this.digimonService.getDigimonList({
+                page: this.page,
+                pageSize: this.pageSize,
+              });
+        }),
+        finalize(() => {
+          this.loading = false;
+        }),
+        catchError((error) => {
+          return [];
+        })
+      )
+      .subscribe((digimons) => {
+        this.updateDigimonList(digimons);
       });
   }
 
@@ -103,14 +105,17 @@ export class AppComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((digimons) => {
-        this.digimons = digimons;
-
-        this.digimons = digimons;
-        this.totalRecords = digimons.pageable.totalElements;
-        this.page = digimons.pageable.currentPage;
-        this.first = 0;
-        console.log(digimons);
+        this.updateDigimonList(digimons);
       });
+  }
+
+  updateDigimonList(digimons: DigimonList) {
+    this.digimons = digimons;
+    this.totalRecords = this.isSearching
+      ? digimons.content.length
+      : digimons.pageable.totalElements;
+    this.page = digimons.pageable.currentPage;
+    this.first = 0;
   }
 
   onPageChange(event: PaginatorState) {
