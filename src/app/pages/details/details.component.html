@@ -1,0 +1,144 @@
+<main class="container" style="margin-bottom: 50px">
+  <p-panel
+    [header]="digimon?.name"
+    [collapsed]="true"
+    [style]="{ marginBottom: '1rem' }"
+  >
+    <div class="visualization">
+      <div class="details" style="flex-grow: 1; margin-bottom: 20px">
+        <p-panel header="Details" [style]="{ marginBottom: '1rem' }">
+          <strong>Name:</strong> {{ digimon?.name }} <br /><br />
+
+          <strong>Release Date:</strong> {{ digimon?.releaseDate }} <br /><br />
+
+          <strong>Type: </strong>
+          <span *ngFor="let type of digimon?.types">
+            {{ type.type }}
+          </span>
+          <br /><br />
+
+          <strong>Level:</strong>
+          <span *ngFor="let level of digimon?.levels">
+            {{ level.level }}
+          </span>
+          <br /><br />
+
+          <strong>Attributes:</strong>
+          <span *ngFor="let attribute of digimon?.attributes">
+            {{ attribute.attribute }}
+          </span>
+          <br /><br />
+        </p-panel>
+
+        <p-panel header="Descriptions" [style]="{ marginBottom: '1rem' }">
+          <p-accordion [activeIndex]="0">
+            <p-accordionTab *ngFor="let description of digimon?.descriptions">
+              <p-header>{{ description.language }}</p-header>
+              <p>{{ description.description }}</p>
+            </p-accordionTab>
+          </p-accordion>
+        </p-panel>
+
+        <p-panel header="Fields" [style]="{ marginBottom: '1rem' }">
+          <p-table [value]="digimon?.fields || []" [style]="{ width: '100%' }">
+            <ng-template pTemplate="header" let-fields>
+              <tr>
+                <th scope="col">Field</th>
+                <th scope="col">Image</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-field>
+              <tr>
+                <td>{{ field.field }}</td>
+                <td>
+                  <p-image
+                    [src]="field.image"
+                    [alt]="field.field"
+                    [style]="{ width: '75px', height: '75px' }"
+                  ></p-image>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-panel>
+
+        <p-panel header="Skills" [style]="{ marginBottom: '1rem' }">
+          <p-table [value]="digimon?.skills || []" [style]="{ width: '100%' }">
+            <ng-template pTemplate="header" let-skills>
+              <tr>
+                <th scope="col">Skill</th>
+                <th scope="col">Description</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-skill>
+              <tr>
+                <td>{{ skill.skill }}</td>
+                <td>{{ skill.description }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-panel>
+
+        <p-panel header="PriorEvolutions" [style]="{ marginBottom: '1rem' }">
+          <p-accordion [activeIndex]="0">
+            <p-accordionTab *ngFor="let evolution of digimon?.priorEvolutions">
+              <p-header>{{ evolution.digimon }}</p-header>
+              <p>
+                <p-image
+                  [src]="evolution.image"
+                  [alt]="evolution.digimon"
+                  [style]="{ width: '75px', height: '75px' }"
+                ></p-image>
+              </p>
+            </p-accordionTab>
+          </p-accordion>
+        </p-panel>
+        <p-panel header="NextEvolutions" [style]="{ marginBottom: '1rem' }">
+          <p-accordion [activeIndex]="0">
+            <p-accordionTab *ngFor="let evolution of digimon?.nextEvolutions">
+              <p-header>{{ evolution.digimon }}</p-header>
+              <p>
+                <p-image
+                  [src]="evolution.image"
+                  [alt]="evolution.digimon"
+                  [style]="{ width: '75px', height: '75px' }"
+                ></p-image>
+              </p>
+            </p-accordionTab>
+          </p-accordion>
+        </p-panel>
+
+        <p-button
+          label="Voltar"
+          icon="pi pi-arrow-left"
+          [routerLink]="['/']"
+          styleClass="p-button-secondary"
+        ></p-button>
+      </div>
+
+      <div
+        class="images"
+        style="margin-left: 20px; margin-right: 10px; margin-bottom: 20px"
+      >
+        <p-galleria
+          [value]="digimon?.images"
+          [containerStyle]="{ 'max-width': '640px', 'min-width': '320px' }"
+          [numVisible]="5"
+        >
+          <ng-template pTemplate="item" let-item>
+            <img [src]="item.href" style="width: 100%" alt="digimon" />
+          </ng-template>
+          <ng-template pTemplate="thumbnail" let-item>
+            <div class="grid grid-nogutter justify-content-center">
+              <img [src]="item.href" style="height: 50px" alt="digimon" />
+            </div>
+          </ng-template>
+        </p-galleria>
+      </div>
+    </div>
+  </p-panel>
+</main>
+<br />
+<p-toast />
