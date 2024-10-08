@@ -12,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { CardModule } from 'primeng/card';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ import { CardModule } from 'primeng/card';
     ButtonModule,
     CardModule,
     ImageModule,
+    PaginatorModule,
     HeaderComponent,
   ],
   providers: [DigimonService],
@@ -35,7 +37,9 @@ export class AppComponent implements OnInit, OnDestroy {
   loading = false;
 
   page: number = 0;
+  first: number = 0;
   pageSize: number = 20;
+  totalRecords: number = 0;
 
   digimons: DigimonList | null = null;
   form!: FormGroup;
@@ -72,6 +76,9 @@ export class AppComponent implements OnInit, OnDestroy {
             )
             .subscribe((digimons) => {
               this.digimons = digimons;
+              this.totalRecords = digimons.content.length;
+              this.page = digimons.pageable.currentPage;
+              this.first = 0;
             });
         } else {
           this.loadDigimons();
@@ -97,7 +104,20 @@ export class AppComponent implements OnInit, OnDestroy {
       )
       .subscribe((digimons) => {
         this.digimons = digimons;
+
+        this.digimons = digimons;
+        this.totalRecords = digimons.pageable.totalElements;
+        this.page = digimons.pageable.currentPage;
+        this.first = 0;
+        console.log(digimons);
       });
+  }
+
+  onPageChange(event: PaginatorState) {
+    this.page = event.page ?? 0;
+    this.pageSize = event.rows ?? 20;
+    this.totalRecords = event.rows ?? 0;
+    this.loadDigimons();
   }
 
   ngOnDestroy() {

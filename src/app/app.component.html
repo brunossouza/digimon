@@ -18,8 +18,7 @@
       <div class="grid">
         <ng-container *ngFor="let digimon of digimons.content">
           <p-card
-            [header]="digimon.name"
-            [subheader]="digimon.name"
+            [header]="digimon.id + ' - ' + digimon.name"
             [style]="{
               width: '300px',
               margin: '0.8rem',
@@ -36,7 +35,6 @@
                 }"
               />
             </ng-template>
-            <p><strong>Level:</strong> {{ digimon.name }}</p>
             <ng-template pTemplate="footer">
               <div class="flex gap-3 mt-1">
                 <p-button
@@ -49,6 +47,18 @@
           </p-card>
         </ng-container>
       </div>
+    </div>
+    <div class="row">
+      <p-paginator
+        [first]="first"
+        [rows]="pageSize"
+        [totalRecords]="totalRecords"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[5, 10, 20, 50, 100]"
+        currentPageReportTemplate="Exibindo {first} a {last} de {totalRecords} registros"
+        (onPageChange)="onPageChange($event)"
+      >
+      </p-paginator>
     </div>
   </main>
 </div>
