@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { first, Observable } from 'rxjs';
 
 import { environment } from '../../environments/environments';
-import { DigimonDetails } from '../../dtos/digimon.dto';
-import { DigimonList } from '../../dtos/digimon-list.dto';
+import { DigimonDetails } from '../dtos/digimon.dto';
+import { DigimonList } from '../dtos/digimon-list.dto';
 
 @Injectable({
   providedIn: 'root',
