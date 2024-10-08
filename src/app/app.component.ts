@@ -8,18 +8,24 @@ import { InputTextModule } from 'primeng/inputtext';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { DigimonService } from './shared/services/digimon.service';
 import { DigimonList } from './dtos/digimon-list.dto';
-import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
+import { ImageModule } from 'primeng/image';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     IconFieldModule,
     InputIconModule,
     InputTextModule,
+    ButtonModule,
+    CardModule,
+    ImageModule,
     HeaderComponent,
-    TableModule,
   ],
   providers: [DigimonService],
   templateUrl: './app.component.html',

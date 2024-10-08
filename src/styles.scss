@@ -3,6 +3,12 @@
 @import "primeicons/primeicons.css";
 
 * {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
 }

@@ -14,37 +14,40 @@
         </p-iconField>
       </form>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <p-table
-          [value]="digimons?.content ?? []"
-          [paginator]="true"
-          [rows]="10"
-          [rowsPerPageOptions]="[5, 10, 20]"
-          [loading]="loading"
-        >
-          <ng-template pTemplate="header">
-            <tr>
-              <th scope="col">Imagem</th>
-              <th scope="col">Id</th>
-              <th scope="col">Nome</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-digimon>
-            <tr>
-              <td>
-                <img
-                  [src]="digimon.image"
-                  [alt]="digimon.name"
-                  width="50"
-                  class="shadow-4"
+    <div class="result" *ngIf="digimons">
+      <div class="grid">
+        <ng-container *ngFor="let digimon of digimons.content">
+          <p-card
+            [header]="digimon.name"
+            [subheader]="digimon.name"
+            [style]="{
+              width: '300px',
+              margin: '0.8rem',
+            }"
+          >
+            <ng-template pTemplate="header">
+              <p-image
+                [alt]="digimon.name"
+                [src]="digimon.image"
+                [style]="{
+                  width: '250px',
+                  height: '250px',
+                  objectFit: 'cover',
+                }"
+              />
+            </ng-template>
+            <p><strong>Level:</strong> {{ digimon.name }}</p>
+            <ng-template pTemplate="footer">
+              <div class="flex gap-3 mt-1">
+                <p-button
+                  pButton
+                  label="Visualizar detalhes"
+                  icon="pi pi-eye"
                 />
-              </td>
-              <td>{{ digimon.id }}</td>
-              <td>{{ digimon.name }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
+              </div>
+            </ng-template>
+          </p-card>
+        </ng-container>
       </div>
     </div>
   </main>
