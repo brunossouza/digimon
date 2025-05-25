@@ -36,7 +36,7 @@ O projeto consiste em uma aplicação web que permite aos usuários:
 Para iniciar o servidor de desenvolvimento:
 
 ```bash
-yarn strart:dev
+yarn start:dev
 ```
 
 O projeto estará disponível em [http://localhost:4200](http://localhost:4200).
